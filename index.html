@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة التعيين الإلكترونية - وزارة التعليم بسلطنة عمان</title>
+    <style>
+        :root {
+            --primary-green: #1b5e20;
+            --medium-green: #2e7d32;
+            --light-gradient-start: #f1f8e9;
+            --light-gradient-end: #ffffff;
+            --accent-gold: #c5a059;
+            --text-main: #2c3e50;
+            --text-muted: #566573;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            /* خلفية رسمية جميلة متدرجة بالأخضر الفاتح والأبيض */
+            background: linear-gradient(135deg, var(--light-gradient-start) 0%, var(--light-gradient-end) 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(46, 125, 50, 0.05) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* الهيدر الرئيسي للموقع */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 50px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--medium-green);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* حاوية الشعار في الجهة اليمنى أعلى الصفحة */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ministry-logo {
+            max-height: 110px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0px 2px 5px rgba(0,0,0,0.05));
+        }
+
+        .ministry-logo:hover {
+            transform: scale(1.02);
+        }
+
+        /* شريط التنقل والأيقونات */
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 25px;
+            background-color: var(--white);
+            border: 1px solid rgba(46, 125, 50, 0.2);
+            border-bottom: 3px solid rgba(46, 125, 50, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--medium-green);
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 160px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .nav-link:hover {
+            border-color: var(--medium-green);
+            border-bottom-color: var(--primary-green);
+            color: var(--primary-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--medium-green) 0%, var(--primary-green) 100%);
+            color: var(--white);
+            border-color: var(--primary-green);
+            border-bottom: 3px solid var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(27, 94, 32, 0.25);
+        }
+
+        .nav-icon {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        /* حاوية المحتوى الرئيسي */
+        main {
+            max-width: 1100px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        /* صناديق محتوى الصفحات */
+        .page-content {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+            border-right: 6px solid var(--medium-green);
+            border-left: 1px solid rgba(0,0,0,0.05);
+            border-top: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            animation: slideUp 0.4s ease forwards;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--primary-green);
+            margin-bottom: 30px;
+            font-size: 24px;
+            border-bottom: 2px solid var(--light-gradient-start);
+            padding-bottom: 12px;
+            position: relative;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 60px;
+            height: 2px;
+            background-color: var(--accent-gold);
+        }
+
+        .welcome-box {
+            background: linear-gradient(to left, var(--light-gradient-start), transparent);
+            padding: 25px;
+            border-radius: 8px;
+            border-right: 4px solid var(--accent-gold);
+        }
+
+        .welcome-text {
+            font-size: 19px;
+            line-height: 1.9;
+            text-align: justify;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        ul, ol {
+            margin-right: 25px;
+            font-size: 16.5px;
+            line-height: 1.9;
+        }
+
+        li {
+            margin-bottom: 18px;
+            color: #34495e;
+            text-align: justify;
+        }
+
+        li strong {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        .sub-list {
+            margin-top: 12px;
+            margin-right: 25px;
+            list-style-type: square;
+        }
+
+        .sub-list li {
+            margin-bottom: 10px;
+            font-size: 15.5px;
+            color: #566573;
+        }
+
+        /* الفوتر والعبارة الترحيبية في اليسار أسفل الصفحة */
+        footer {
+            padding: 40px 50px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        .footer-phrase {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-green);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 30px;
+            border-radius: 50px;
+            border-left: 5px solid var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            pointer-events: auto;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column-reverse;
+                gap: 25px;
+                padding: 20px;
+            }
+            .logo-container {
+                margin-right: auto;
+                margin-left: auto;
+            }
+            .ministry-logo {
+                max-height: 90px;
+            }
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+            .nav-link {
+                min-width: 130px;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            .page-content {
+                padding: 25px;
+            }
+            footer {
+                justify-content: center;
+                padding: 20px;
+            }
+            .footer-phrase {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="nav-link active" onclick="showPage('home', this)">
+                <span class="nav-icon">🏠</span>
+                <span>الصفحة الرئيسية</span>
+            </div>
+            <div class="nav-link" onclick="showPage('documents', this)">
+                <span class="nav-icon">📄</span>
+                <span>الأوراق المطلوبة</span>
+            </div>
+            <div class="nav-link" onclick="showPage('steps', this)">
+                <span class="nav-icon">🧭</span>
+                <span>خطوات إجراءات التعيين</span>
+            </div>
+        </nav>
+
+        <div class="logo-container">
+            <img src="شعار الوزارة.png" alt="شعار وزارة التعليم - سلطنة عمان" class="ministry-logo">
+        </div>
+    </header>
+
+    <main>
+        <div id="home" class="page-content active">
+            <h2>مرحباً بكم</h2>
+            <div class="welcome-box">
+                <p class="welcome-text">
+                    بكل فخر واعتزاز، نرحب بانضمامكم إلى صرحنا التعليمي. ثقتنا كبيرة في أنكم ستكونون إضافة نوعية لمسيرتنا، وركيزة أساسية في بناء أجيال المستقبل.
+                </p>
+            </div>
+        </div>
+
+        <div id="documents" class="page-content">
+            <h2>الأوراق المطلوبة لإتمام إجراءات التعيين</h2>
+            <ul>
+                <li>(6) صور شخصية.</li>
+                <li>
+                    <strong>(الأصل + نسختين) من:</strong> البطاقة الشخصية، جواز السفر، شهادة الميلاد، بطاقة سجل وزارة العمل أو الاستمارة الخاصة بسجل القيد في وزارة العمل، المؤهل الدراسي: (البكالوريوس+ دبلوم التأهيل التربوي)، إحدى شهادتي اختبار نظام اللغة الدوليين المستوى (ACADEMIC IELTS) بنتيجة (6) أو (TOEFL) بنتيجة (79) لتخصص اللغة الإنجليزية، شهادة المعادلة الصادرة من وزارة التعليم للخريجين الحاصلين على مؤهل البكالوريوس من خارج سلطنة عُمان، تصديق شهادة دبلوم التأهيل التربوي من خارج سلطنة عُمان.
+                </li>
+                <li><strong>(الأصل + نسخة) من:</strong> تقرير الفحص الطبي الذي يؤكد اللياقة الطبية للخدمة بتوصية واضحة.</li>
+                <li>عدد (1) صور شخصية ملونة وحديثة للمتعين.</li>
+                <li>عدد (1) نسخ لكل من جواز السفر والبطاقة الشخصية والمؤهل العلمي.</li>
+                <li>
+                    <strong>أسماء وبيانات أفراد الأسرة</strong> (الأب، الأم، الأبناء، الأخوة، الأخوات، الزوج أو الزوجة):
+                    <ul class="sub-list">
+                        <li>الاسم الرباعي - رقم البطاقة الشخصية - عنوان السكن - تاريخ ومكان الميلاد - جهة العمل والمسمى الوظيفي لكل أفراد الأسرة.</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>بيانات عدد (2) من المعرفين</strong> شريطة ألا يكون من الأقارب:
+                    <ul class="sub-list">
+                        <li>الاسم الرباعي - رقم البطاقة الشخصية - عنوان السكن - رقم الهاتف - جهة العمل والمسمى الوظيفي.</li>
+                    </ul>
+                </li>
+                <li><strong>اسم شيخ القبيلة أو الرشيد:</strong> (عنوان السكن - رقم الهاتف - جهة العمل - المسمى الوظيفي).</li>
+                <li><strong>بيانات البنك:</strong> (رقم الحساب - اسم البنك – الفرع).</li>
+            </ul>
+        </div>
+
+        <div id="steps" class="page-content">
+            <h2>خطوات إجراءات التعيين</h2>
+            <ol>
+                <li>يرجى تسجيل الحضور والالتزام بالتوقيت المحدد. مع إبراز المعدل التراكمي (البكالوريوس).</li>
+                <li>
+                    يرجى التوجه إلى القاعة المخصصة لاستكمال ملف التعيين:
+                    <ul class="sub-list">
+                        <li>تسليم الوثائق المطلوبة.</li>
+                        <li>تعبئة الاستمارات.</li>
+                    </ul>
+                </li>
+                <li>إجراء المقابلة الشخصية في القاعات المحددة.</li>
+                <li>تفعيل البصمة.</li>
+                <li>تعبئة الاستمارات الشخصية والإدارية المطلوبة إلكترونياً.</li>
+            </ol>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-phrase">
+            أهلاً بكم في ميدان العطاء
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId, element) {
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            document.getElementById(pageId).classList.add('active');
+            element.classList.add('active');
+            
+            if(window.innerWidth <= 768) {
+                document.querySelector('main').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
